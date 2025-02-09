@@ -1,5 +1,5 @@
 ARG BASE_TAG="develop"
-ARG BASE_IMAGE="core-ubuntu-focal"
+ARG BASE_IMAGE="core-ubuntu-noble"
 FROM kasmweb/$BASE_IMAGE:$BASE_TAG
 USER root
 
@@ -15,19 +15,52 @@ WORKDIR $HOME
 COPY ./src/ubuntu/install/chrome $INST_SCRIPTS/chrome/
 RUN bash $INST_SCRIPTS/chrome/install_chrome.sh  && rm -rf $INST_SCRIPTS/chrome/
 
-
-COPY ./src/ubuntu/install/vs_code $INST_SCRIPTS/vs_code/
+# Install vscode
+COPY ./src/ubuntu/install/vs_code2 $INST_SCRIPTS/vs_code/
 RUN bash $INST_SCRIPTS/vs_code/install_vs_code.sh  && rm -rf $INST_SCRIPTS/vs_code/
 
-COPY ./src/ubuntu/install/vs_code/custom_startup.sh $STARTUPDIR/custom_startup.sh
+COPY ./src/ubuntu/install/vs_code2/custom_startup.sh $STARTUPDIR/custom_startup.sh
 RUN chmod +x $STARTUPDIR/custom_startup.sh
 RUN chmod 755 $STARTUPDIR/custom_startup.sh
+
+# Install OpenSSH
+RUN apt-get update \
+    && apt-get install -y openssh-server \
+    #Establish the operating directory of OpenSSH
+    && mkdir /var/run/sshd \
+    #SSH login fix
+    && sed 's@session\s*required\s*pam_loginuid.so@session optional \
+    pam_loginuid.so@g' -i /etc/pam.d/sshd
+#expose port 22
+EXPOSE 22
+#Commands to be executed by default
+CMD ["/usr/sbin/sshd","-D"]
+RUN service ssh restart
 
 
 # Update the desktop environment to be optimized for a single application
 RUN cp $HOME/.config/xfce4/xfconf/single-application-xfce-perchannel-xml/* $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/
 RUN cp /usr/share/backgrounds/bg_kasm.png /usr/share/backgrounds/bg_default.png
 RUN apt-get remove -y xfce4-panel
+
+RUN apt-get update \
+    # && apt-get install -y sudo \
+    # && echo 'kasm-user ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers \
+    # && apt-get install -y code \
+    && rm -rf /var/lib/apt/list/* \
+    && code --install-extension ms-azuretools.vscode-docker --no-sandbox --user-data-dir /home/kasm-user/.vscode/extensions/ \
+    && code --install-extension ms-ceintl.vscode-language-pack-fr --no-sandbox --user-data-dir /home/kasm-user/.vscode/extensions/ \
+    && code --install-extension ms-vscode-remote.remote-containers --no-sandbox --user-data-dir /home/kasm-user/.vscode/extensions/ \
+    && code --install-extension ms-vscode-remote.remote-ssh --no-sandbox --user-data-dir /home/kasm-user/.vscode/extensions/ \
+    && code --install-extension ms-vscode-remote.remote-ssh-edit --no-sandbox --user-data-dir /home/kasm-user/.vscode/extensions/ \
+    && code --install-extension ms-vscode.remote-explorer --no-sandbox --user-data-dir /home/kasm-user/.vscode/extensions/ \
+    && code --install-extension ms-vscode.remote-repositories --no-sandbox --user-data-dir /home/kasm-user/.vscode/extensions/ \
+    && code --install-extension github.remotehub --no-sandbox --user-data-dir /home/kasm-user/.vscode/extensions/ \
+    && code --install-extension mhutchie.git-graph --no-sandbox --user-data-dir /home/kasm-user/.vscode/extensions/ \
+    && code --install-extension ms-vscode.live-server --no-sandbox --user-data-dir /home/kasm-user/.vscode/extensions/
+
+RUN mkdir $HOME/.ssh/
+RUN locale-gen fr_FR.UTF-8
 
 ######### End Customizations ###########
 

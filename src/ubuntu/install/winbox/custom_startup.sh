@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -ex
-START_COMMAND="code"
-PGREP="code"
+START_COMMAND="/usr/share/winbox/WinBox"
+PGREP="WinBox"
 export MAXIMIZE="true"
-export MAXIMIZE_NAME="Visual Studio Code"
+export MAXIMIZE_NAME="WinBox"
 MAXIMIZE_SCRIPT=$STARTUPDIR/maximize_window.sh
-DEFAULT_ARGS="--no-sandbox"
+#DEFAULT_ARGS="%F"
 ARGS=${APP_ARGS:-$DEFAULT_ARGS}
 
 options=$(getopt -o gau: -l go,assign,url: -n "$0" -- "$@") || exit
