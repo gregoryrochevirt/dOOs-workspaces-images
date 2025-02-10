@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 set -ex
-START_COMMAND="/usr/share/winbox/WinBox"
-PGREP="WinBox"
+START_COMMAND="/opt/winbox4/winbox"
+PGREP="winbox"
 export MAXIMIZE="true"
-export MAXIMIZE_NAME="WinBox"
+export MAXIMIZE_NAME="winbox"
 MAXIMIZE_SCRIPT=$STARTUPDIR/maximize_window.sh
 #DEFAULT_ARGS="%F"
+DEFAULT_ARGS="$CONNECTTO $USERMANE $PASSWORD"
 ARGS=${APP_ARGS:-$DEFAULT_ARGS}
 
 options=$(getopt -o gau: -l go,assign,url: -n "$0" -- "$@") || exit

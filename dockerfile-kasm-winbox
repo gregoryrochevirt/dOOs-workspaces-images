@@ -4,6 +4,9 @@ USER root
 ENV HOME /home/kasm-default-profile
 ENV STARTUPDIR /dockerstartup
 ENV INST_SCRIPTS $STARTUPDIR/install
+ENV CONNECTTO 192.168.0.10
+ENV USERMANE jean
+ENV PASSWORD pierre
 WORKDIR $HOME
 
 ######### Customize Container Here ###########
@@ -22,8 +25,8 @@ RUN cp /usr/share/backgrounds/bg_kasm.png /usr/share/backgrounds/bg_default.png
 RUN apt-get remove -y xfce4-panel
 
 RUN locale-gen fr_FR.UTF-8
-#RUN echo "/usr/bin/desktop_ready && /usr/share/winbox/WinBox &" > $STARTUPDIR/custom_startup.sh \
-#    && chmod +x $STARTUPDIR/custom_startup.sh
+RUN echo "/usr/bin/desktop_ready && /opt/winbox4/WinBox &" > $STARTUPDIR/custom_startup.sh \
+    && chmod +x $STARTUPDIR/custom_startup.sh
 
 
 ######### End Customizations ###########
