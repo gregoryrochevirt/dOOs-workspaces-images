@@ -11,7 +11,9 @@ For more information about building custom images please review the  [**How To G
 # Manual Deployment
 
 ```
-sudo docker run --rm  -it --shm-size=512m -p 6901:6901 -e VNC_PW=password kasmweb/firefox:dev
+sudo docker run --rm  -it --shm-size=512m -p 6901:6901 -e VNC_PW=password -e CONNECTTO=192.168.0.10 -e
+USERMANE=jean -e PASSWORD=pierre dooshub/winbox4:1.16.1
+
 ```
 
 The container is now accessible via a browser : `https://<IP>:6901`
