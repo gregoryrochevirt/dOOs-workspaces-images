@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -ex
-START_COMMAND="/opt/winbox4/winbox"
-PGREP="winbox"
+START_COMMAND="winbox"
+PGREP="WinBox"
 export MAXIMIZE="true"
-export MAXIMIZE_NAME="winbox"
+export MAXIMIZE_NAME="WinBox"
 MAXIMIZE_SCRIPT=$STARTUPDIR/maximize_window.sh
-#DEFAULT_ARGS="%F"
+# DEFAULT_ARG variables is in dockerfile-kasm-winbox4 file
 DEFAULT_ARGS="$CONNECTTO $USERMANE $PASSWORD"
 ARGS=${APP_ARGS:-$DEFAULT_ARGS}
 
@@ -42,6 +42,11 @@ kasm_exec() {
         /usr/bin/filter_ready
         /usr/bin/desktop_ready
         bash ${MAXIMIZE_SCRIPT} &
+        if [ "$DARKTHEME" = "true" ]; then
+            echo "Applying dark mode..."
+            xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
+            xfconf-query -c xsettings -p /Net/IconThemeName -s "Ubuntu-Mono-Dark"
+        fi
         $START_COMMAND $ARGS $OPT_URL
     else
         echo "No URL specified for exec command. Doing nothing."
@@ -67,6 +72,11 @@ kasm_startup() {
                 /usr/bin/desktop_ready
                 set +e
                 bash ${MAXIMIZE_SCRIPT} &
+                if [ "$DARKTHEME" = "true" ]; then
+                    echo "Applying dark mode..."
+                    xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
+                    xfconf-query -c xsettings -p /Net/IconThemeName -s "Ubuntu-Mono-Dark"
+                fi
                 $START_COMMAND $ARGS $URL
                 set -e
             fi
