@@ -41,6 +41,12 @@ kasm_exec() {
         /usr/bin/filter_ready
         /usr/bin/desktop_ready
         bash ${MAXIMIZE_SCRIPT} &
+        if [ "$DARKTHEME" = "true" ]; then
+            echo "Applying dark mode..."
+            xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
+            xfconf-query -c xsettings -p /Net/IconThemeName -s "Ubuntu-Mono-Dark"
+            sed -i -e 's/"workbench.colorTheme": ".*"/"workbench.colorTheme": "Visual Studio Dark"/g' "$HOME/.config/Code/User/settings.json"
+        fi
         $START_COMMAND $ARGS $OPT_URL
     else
         echo "No URL specified for exec command. Doing nothing."
@@ -66,6 +72,12 @@ kasm_startup() {
                 /usr/bin/desktop_ready
                 set +e
                 bash ${MAXIMIZE_SCRIPT} &
+                if [ "$DARKTHEME" = "true" ]; then
+                    echo "Applying dark mode..."
+                    xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
+                    xfconf-query -c xsettings -p /Net/IconThemeName -s "Ubuntu-Mono-Dark"
+                    sed -i -e 's/"workbench.colorTheme": ".*"/"workbench.colorTheme": "Visual Studio Dark"/g' "$HOME/.config/Code/User/settings.json"
+                fi
                 $START_COMMAND $ARGS $URL
                 set -e
             fi

@@ -7,6 +7,21 @@ wget -q https://update.code.visualstudio.com/latest/linux-deb-${ARCH}/stable -O 
 apt-get update
 apt-get install -y ./vs_code.deb
 
+# Install extentions
+apt-get update \
+rm -rf /var/lib/apt/list/* \
+code --install-extension ms-azuretools.vscode-docker --no-sandbox --user-data-dir /home/kasm-user/.vscode/extensions/ \
+code --install-extension ms-ceintl.vscode-language-pack-fr --no-sandbox --user-data-dir /home/kasm-user/.vscode/extensions/ \
+code --install-extension ms-vscode-remote.remote-containers --no-sandbox --user-data-dir /home/kasm-user/.vscode/extensions/ \
+code --install-extension ms-vscode-remote.remote-ssh --no-sandbox --user-data-dir /home/kasm-user/.vscode/extensions/ \
+code --install-extension ms-vscode-remote.remote-ssh-edit --no-sandbox --user-data-dir /home/kasm-user/.vscode/extensions/ \
+code --install-extension ms-vscode.remote-explorer --no-sandbox --user-data-dir /home/kasm-user/.vscode/extensions/ \
+code --install-extension ms-vscode.remote-repositories --no-sandbox --user-data-dir /home/kasm-user/.vscode/extensions/ \
+code --install-extension github.remotehub --no-sandbox --user-data-dir /home/kasm-user/.vscode/extensions/ \
+code --install-extension mhutchie.git-graph --no-sandbox --user-data-dir /home/kasm-user/.vscode/extensions/ \
+code --install-extension ms-vscode.live-server --no-sandbox --user-data-dir /home/kasm-user/.vscode/extensions/
+
+
 # Desktop icon
 mkdir -p /usr/share/icons/hicolor/apps
 wget -O /usr/share/icons/hicolor/apps/vscode.svg https://kasm-static-content.s3.amazonaws.com/icons/vscode.svg
@@ -16,12 +31,6 @@ cp /usr/share/applications/code.desktop $HOME/Desktop
 chmod +x $HOME/Desktop/code.desktop
 chown 1000:1000 $HOME/Desktop/code.desktop
 rm vs_code.deb
-
-# Conveniences for python development
-apt-get update
-apt-get install -y python3-setuptools \
-                   python3-venv \
-                   python3-virtualenv
 
 # Cleanup for app layer
 chown -R 1000:0 $HOME
