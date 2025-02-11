@@ -7,10 +7,10 @@ ENV INST_SCRIPTS $STARTUPDIR/install
 WORKDIR $HOME
 
 # Addition dOOs ENV
-ENV DARKTHEME true
+ENV SYSDARKTHEME true
 ENV CONNECTTO 192.168.0.10
-ENV USERMANE jean
-ENV PASSWORD pierre
+ENV USERMANE dOOsuser
+ENV PASSWORD dOOspassword
 
 ######### Customize Container Here ###########
 
@@ -28,7 +28,7 @@ RUN cp $HOME/.config/xfce4/xfconf/single-application-xfce-perchannel-xml/* $HOME
 RUN cp /usr/share/backgrounds/bg_kasm.png /usr/share/backgrounds/bg_default.png
 RUN apt-get remove -y xfce4-panel
 
-RUN locale-gen fr_FR.UTF-8
+RUN apt-get clean
 
 # Custom blackground
 COPY ./src/common/resources/images/bg_default.png /usr/share/backgrounds/bg_default.png

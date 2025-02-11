@@ -10,7 +10,7 @@ ENV DONT_PROMPT_WSL_INSTALL "No_Prompt_please"
 WORKDIR $HOME
 
 # Addition dOOs ENV
-ENV DARKTHEME true
+ENV SYSDARKTHEME true
 
 ######### Customize Container Here ###########
 
@@ -49,8 +49,7 @@ RUN apt-get remove -y xfce4-panel
 #RUN apt-get install -y sudo \
 #    && echo 'kasm-user ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers \
 
-
-RUN locale-gen fr_FR.UTF-8
+RUN apt-get clean
 
 # Custom blackground
 COPY ./src/common/resources/images/bg_default.png /usr/share/backgrounds/bg_default.png

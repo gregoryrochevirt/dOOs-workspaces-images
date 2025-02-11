@@ -42,7 +42,7 @@ kasm_exec() {
         /usr/bin/filter_ready
         /usr/bin/desktop_ready
         bash ${MAXIMIZE_SCRIPT} &
-        if [ "$DARKTHEME" = "true" ]; then
+        if [ "$SYSDARKTHEME" = "true" ]; then
             echo "Applying dark mode..."
             xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
             xfconf-query -c xsettings -p /Net/IconThemeName -s "Ubuntu-Mono-Dark"
@@ -72,7 +72,7 @@ kasm_startup() {
                 /usr/bin/desktop_ready
                 set +e
                 bash ${MAXIMIZE_SCRIPT} &
-                if [ "$DARKTHEME" = "true" ]; then
+                if [ "$SYSDARKTHEME" = "true" ]; then
                     echo "Applying dark mode..."
                     xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
                     xfconf-query -c xsettings -p /Net/IconThemeName -s "Ubuntu-Mono-Dark"
